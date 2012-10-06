@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<script src="../canvas-timer.js"></script>
+	</head>
+	<body>
+		<div id="bartimeElapsed">0</div>
+		<div id="bar"></div>
+		
+		<div id="pietimeElapsed">0</div>
+		<div id="pie"></div>
+		<script type="text/javascript">
+			(function() {
+				var pie = new CanvasPieTimer(1000, 30000, 26, 26, function() {
+					console.log('Time to party');
+					document.getElementById('pietimeElapsed').innerHTML = 'Time to party';
+				}, function(timeElapsed) {
+					console.log(timeElapsed);
+					document.getElementById('pietimeElapsed').innerHTML = timeElapsed;
+				});
+				document.getElementById('pie').appendChild(pie.canvas);
+				pie.start();
+				
+				var bar = new CanvasBarTimer(1000, 15000, 100, 26, function() {
+					console.log('Time to party');
+					document.getElementById('bartimeElapsed').innerHTML = 'Time to party';
+				}, function(timeElapsed) {
+					console.log(timeElapsed);
+					document.getElementById('bartimeElapsed').innerHTML = timeElapsed;
+				});
+				document.getElementById('bar').appendChild(bar.canvas);
+				bar.start();
+			})();
+
+		</script>
+	</body>
+</html>

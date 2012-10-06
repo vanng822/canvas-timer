@@ -36,6 +36,7 @@
 		/* center of circle or left corner */
 		this.x = 0;
 		this.y = 0;
+		this.init();
 	};
 
 	CanvasTimer.prototype = {
@@ -84,7 +85,7 @@
 		CanvasTimer.call(this, updateInterval, limitTime, width, height, timesUp, tick, timeElapsed, bgcolor, color, borderColor, borderWidth);
 		/* Vertical line as start */
 		this.startAngle = 1.5 * Math.PI;
-		this.endAngle = 1.5 * Math.PI;
+		this.endAngle = 1.5 * Math.PI + this.dt;
 		this.radius = 0;
 	};
 	inherits(CanvasPieTimer, CanvasTimer);
@@ -98,41 +99,41 @@
 		clearInterval(this.timer);
 		this.timeElapsed = 0;
 		this.startAngle = 1.5 * Math.PI;
-		this.endAngle = 1.5 * Math.PI;
+		this.endAngle = 1.5 * Math.PI + this.dt;
 		context = canvas.getContext('2d');
 		this.x = this.y = this.radius = this.width / 2;
 		context.globalAlpha = 1;
 		context.beginPath();
-		
 		context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
-		
 		context.fillStyle = this.borderColor;
 		context.fill();
 		context.closePath();
+		
 		context.beginPath();
 		context.arc(this.x, this.y, this.radius - this.borderWidth, 0, Math.PI * 2, true);
-		
 		context.fillStyle = this.bgcolor;
 		context.fill();
 		context.closePath();
 	};
 
 	CanvasPieTimer.prototype.update = function() {
-		var context;
-		this.endAngle += this.dt;
+		var context, endAngle = this.endAngle;
 		context = this.canvas.getContext('2d');
-
+		context.globalAlpha = 1;
 		context.beginPath();
 		context.moveTo(this.x, this.y);
 		/* draw entire sector; can add some shift to draw less area, dt+shift; this is due to rounding and drawing error */
-		context.arc(this.x, this.y, this.radius - this.borderWidth, this.startAngle, this.endAngle, false);
+		context.arc(this.x, this.y, this.radius - this.borderWidth, this.startAngle, endAngle, false);
 		context.fillStyle = this.color;
 		context.fill();
 		context.closePath();
+		this.endAngle += this.dt;
 	};
 	
 	var CanvasBarTimer = function(updateInterval, limitTime, width, height, timesUp, tick, timeElapsed, bgcolor, color, borderColor, borderWidth) {
 		CanvasTimer.call(this, updateInterval, limitTime, width, height, timesUp, tick, timeElapsed, bgcolor, color, borderColor, borderWidth);
+		this.drawWidth = this.dt;
+		this.drawHeight = this.height - 2 * this.borderWidth;
 	};
 	
 	inherits(CanvasBarTimer, CanvasTimer);
@@ -147,6 +148,8 @@
 		this.timeElapsed = 0;
 		context = canvas.getContext('2d');
 		this.x = this.y = this.borderWidth;
+		this.drawWidth = this.dt;
+		this.drawHeight = this.height - 2 * this.borderWidth;
 		context.globalAlpha = 1;
 		context.beginPath();
 		context.fillStyle = this.borderColor;
@@ -155,18 +158,19 @@
 		
 		context.beginPath();
 		context.fillStyle = this.bgcolor;
-		context.fillRect(this.borderWidth, this.y, this.width - 2 * this.borderWidth, this.height - 2 * this.borderWidth);
+		context.fillRect(this.x, this.y, this.width - 2 * this.borderWidth, this.drawHeight);
 		context.closePath();
 	};
 
 	CanvasBarTimer.prototype.update = function() {
 		var context;
-		this.x += this.dt;
 		context = this.canvas.getContext('2d');
+		context.globalAlpha = 1;
 		context.beginPath();
 		context.fillStyle = this.color;
-		context.fillRect(this.borderWidth, this.y, this.x, this.height - 2 * this.borderWidth);
+		context.fillRect(this.x, this.y, this.drawWidth, this.drawHeight);
 		context.closePath();
+		this.drawWidth += this.dt;
 	};
 	
 	window.CanvasPieTimer = CanvasPieTimer;
