@@ -96,6 +96,7 @@
 		clearInterval(this.timer);
 		this.timeElapsed = 0;
 		this.startAngle = 1.5 * Math.PI;
+		this.endAngle = 1.5 * Math.PI;
 		context = canvas.getContext('2d');
 		this.x = this.y = this.radius = this.width / 2;
 		context.globalAlpha = 1;
