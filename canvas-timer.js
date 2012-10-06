@@ -14,11 +14,12 @@
 			superc.prototype.constructor = superc;
 		}
 	};
-	var CanvasTimer = function(updateInterval, limitTime, width, height, timesUp, bgcolor, color, borderColor, borderWidth) {
+	var CanvasTimer = function(updateInterval, limitTime, width, height, timesUp, tick, timeElapsed, bgcolor, color, borderColor, borderWidth) {
 		this.updateInterval = updateInterval;
 		this.timesUp = timesUp || function(){};
+		this.tick = tick || function(timeElapsed){};
 		this.limitTime = limitTime;
-		this.timeElapsed = 0;
+		this.timeElapsed = timeElapsed || 0;
 		this.borderColor = borderColor || '3B5998'
 		this.borderWidth = borderWidth || 4;
 		this.bgcolor = bgcolor || 'FFFFFF';
@@ -52,6 +53,7 @@
 			this.timer = setInterval(function() {
 				if(!self.checkTimeIsUp()) {
 					self.update();
+					self.tick(self.timeElapsed);
 				}
 			}, this.updateInterval);
 		},
@@ -78,8 +80,8 @@
 		}
 	};
 
-	var CanvasPieTimer = function(updateInterval, limitTime, width, height, timesUp, bgcolor, color, borderColor, borderWidth) {
-		CanvasTimer.call(this, updateInterval, limitTime, width, height, timesUp, bgcolor, color, borderColor, borderWidth);
+	var CanvasPieTimer = function(updateInterval, limitTime, width, height, timesUp, tick, timeElapsed, bgcolor, color, borderColor, borderWidth) {
+		CanvasTimer.call(this, updateInterval, limitTime, width, height, timesUp, tick, timeElapsed, bgcolor, color, borderColor, borderWidth);
 		/* Vertical line as start */
 		this.startAngle = 1.5 * Math.PI;
 		this.endAngle = 1.5 * Math.PI;
@@ -116,7 +118,6 @@
 	};
 
 	CanvasPieTimer.prototype.update = function() {
-		console.log('sdfds')
 		var context;
 		this.endAngle += this.dt;
 		context = this.canvas.getContext('2d');
@@ -130,8 +131,8 @@
 		context.closePath();
 	};
 	
-	var CanvasBarTimer = function(updateInterval, limitTime, width, height, timesUp, bgcolor, color, borderColor, borderWidth) {
-		CanvasTimer.call(this, updateInterval, limitTime, width, height, timesUp, bgcolor, color, borderColor, borderWidth);
+	var CanvasBarTimer = function(updateInterval, limitTime, width, height, timesUp, tick, timeElapsed, bgcolor, color, borderColor, borderWidth) {
+		CanvasTimer.call(this, updateInterval, limitTime, width, height, timesUp, tick, timeElapsed, bgcolor, color, borderColor, borderWidth);
 	};
 	
 	inherits(CanvasBarTimer, CanvasTimer);
