@@ -117,13 +117,13 @@
 	};
 
 	CanvasPieTimer.prototype.update = function() {
-		var context, endAngle = this.endAngle;
+		var context;
 		context = this.canvas.getContext('2d');
 		context.globalAlpha = 1;
 		context.beginPath();
 		context.moveTo(this.x, this.y);
 		/* draw entire sector; can add some shift to draw less area, dt+shift; this is due to rounding and drawing error */
-		context.arc(this.x, this.y, this.radius - this.borderWidth, this.startAngle, endAngle, false);
+		context.arc(this.x, this.y, this.radius - this.borderWidth, this.startAngle, this.endAngle, false);
 		context.fillStyle = this.color;
 		context.fill();
 		context.closePath();
