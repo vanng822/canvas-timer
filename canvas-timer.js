@@ -20,10 +20,10 @@
 		this.tick = tick || function(timeElapsed){};
 		this.limitTime = limitTime;
 		this.timeElapsed = timeElapsed || 0;
-		this.borderColor = borderColor || '3B5998'
+		this.borderColor = borderColor || '#3B5998'
 		this.borderWidth = borderWidth || 4;
-		this.bgcolor = bgcolor || 'FFFFFF';
-		this.color = color || 'CCCCCC';
+		this.bgcolor = bgcolor || '#FFFFFF';
+		this.color = color || '#CCCCCC';
 		this.width = width;
 		this.height = height;
 		/* canvas reference */
